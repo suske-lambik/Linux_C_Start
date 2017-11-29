@@ -4,7 +4,6 @@
 
 int main(void)
 {
-    int number;
     puts("Please give me some text");
     char buffer[BUFFERSIZE];
     fgets(buffer, BUFFERSIZE, stdin);

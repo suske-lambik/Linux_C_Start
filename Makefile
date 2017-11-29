@@ -1,2 +1,7 @@
-all: hello_world.c
-	gcc -Wall -Iinclude -o hello_world hello_world.c
+all: HelloWorld MyCat
+
+HelloWorld: hello_world.c
+	gcc -Wall hello_world.c -o hello_world
+
+MyCat: MyCat.c
+	gcc -Wall MyCat.c -o MyCat
