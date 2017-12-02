@@ -3,14 +3,17 @@
 #include <vector>
 #include <iostream>
 
+enum MessageId {A, B, C};
 
 class Message
 {
 public:
-    Message(const std::string event);
-    std::string getEvent();
+    Message(MessageId id, const std::string event);
+    MessageId getId() {return messageId;};
+    std::string getEvent() {return messageEvent;};
 private:
     std::string messageEvent;
+    MessageId messageId;
 };
 
 class MessageBus
@@ -19,11 +22,11 @@ public:
     MessageBus();
     ~MessageBus();
 
-    void addReceiver(std::function<void (Message)> messageReceiver);
+    void addReceiver(MessageId id, std::function<void (Message)> messageReceiver);
     void sendMessage(Message message);
     void notify();
 private:
-    std::vector<std::function<void (Message)>> receivers;
+    std::vector<std::vector<std::function<void (Message)>>> receivers;
     std::queue<Message> messages;
 };
 
@@ -34,10 +37,11 @@ private:
 class BusNode
 {
 public:
-    BusNode(MessageBus *messageBus);
+    BusNode(MessageBus *mB, std::vector<MessageId> subIds);
     virtual void update();
 protected:
-    std::function<void (Message)> getNotifyFunc();
+    std::vector<MessageId> subscribedIds;
+    std::function<void (Message)> getNotifyFunc(MessageId id);
     void send(Message message);
     virtual void onNotify(Message message);
     

@@ -7,36 +7,46 @@ void erase (int y, int x) {
 	mvaddch(y, x, ' ');
 }
 
-void game_loop(char main_char, int row, int col, int ch) {
+void screen_init() {
+	// Initialize ncurses
+ 	initscr();
+ 	clear();
+ 	noecho();
+ 	cbreak();
+ 	keypad(stdscr, TRUE);
+ 	curs_set(0);
+}
+
+void game_loop(char main_char, int row, int col, int input) {
 	// Check if the user wishes to play the game
-	if(ch == 'q' || ch =='Q') return;
+	if(input == 'q' || input =='Q') return;
 
 	// Show the main character on the screen
 	mvaddch(row, col, main_char);
 	refresh();
 
 	for(;;) {
-		ch = getch();
+		input = getch();
 
-		if(ch == KEY_LEFT) {
+		if(input == KEY_LEFT) {
 			erase(row, col);
 			col = col - 1;
 			mvaddch(row, col, main_char);
 			refresh();
 		}
-		else if(ch == KEY_RIGHT) {
+		else if(input == KEY_RIGHT) {
 			erase(row, col);
 			col = col + 1;
 			mvaddch(row, col, main_char);
 			refresh();
 		}
-		else if(ch == KEY_UP) {
+		else if(input == KEY_UP) {
 			erase(row, col);
 			row = row - 1;
 			mvaddch(row, col, main_char);
 			refresh();
 		}
-		else if(ch == KEY_DOWN) {
+		else if(input == KEY_DOWN) {
 			erase(row, col);
 			row = row + 1;
 			mvaddch(row, col, main_char);
@@ -55,14 +65,7 @@ int main()
 	//~ std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	//~ std::cout << "\r" << "Hello again" << std::endl;
 	
-	// Initialize ncurses
- 	initscr();
- 	clear();
- 	noecho();
- 	cbreak();
- 	keypad(stdscr, TRUE);
- 	curs_set(0);	
- 
+    screen_init()
  	// Define the main character initial position and symbol:
  	int row = 10, col = 10;
  	char main_char = '@';

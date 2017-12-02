@@ -6,7 +6,7 @@
 class NodeA : public BusNode
 {
 public:
-	NodeA(MessageBus* messageBus) : BusNode(messageBus) {};
+	NodeA(MessageBus* messageBus,  std::vector<MessageId> subIds) : BusNode(messageBus, subIds) {std::cout << "Create A" << std::endl;};
 	void update()
 	{
 		std::cout << "Update A" << std::endl;
@@ -15,7 +15,7 @@ private:
 	void onNotify(Message message)
 	{
 		std::cout << "A has received: " << message.getEvent() << std::endl;
-		if (messageIsGreeting(message)) {send(Message("Hi B! What's up?"));};
+		if (messageIsGreeting(message)) {send(Message(MessageId::B, "Hi B! What's up?"));};
 	};
 	
 	bool messageIsGreeting(Message msg)
@@ -29,12 +29,12 @@ private:
 class NodeB : public BusNode
 {
 public:
-	NodeB(MessageBus* messageBus) : BusNode(messageBus) {m_greetingDone = false;};
+	NodeB(MessageBus* messageBus,  std::vector<MessageId> subIds) : BusNode(messageBus, subIds) {m_greetingDone = false;};
 	void update()
 	{
 		std::cout << "Update B" << std::endl;
 		if(!m_greetingDone){
-			send(Message("B says hi!"));
+			send(Message(MessageId::A, "B says hi!"));
 		}
 		m_greetingDone = true;
 	};
@@ -57,10 +57,16 @@ private:
 
 int main()
 {
+    std::cout << "Start" << std::endl;
+    std::vector<MessageId> cA {B, C};
+    std::vector<MessageId> cB {A, C};
+    std::cout << "Start" << std::endl;
     MessageBus messageBus;
-    NodeA compA(&messageBus);
-    NodeB compB(&messageBus);
+    NodeA compA(&messageBus, cA);
+    std::cout << "Start" << std::endl;
+    NodeB compB(&messageBus, cB);
 
+    std::cout << "Start" << std::endl;
     // This is supposed to act like a game loop.
     for (int ctr = 0; ctr < 10; ctr++) {
         compA.update();
