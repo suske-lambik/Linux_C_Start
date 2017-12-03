@@ -5,14 +5,19 @@
  *      Author: philippe
  */
 #include <stdio.h>
+#include <stdlib.h> //rand()
+#include <time.h> //time()
 #include <string.h>
+
+#define _unsafe_sscanf sscanf
+#include "poison.h" //bad functions
 
 enum CardType {HEARTS = 0, CLUBS, DIAMONDS, SPADES, N_TYPES};
 enum CardValue {ONE = 0, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, \
 	JACK, QUEEN, KING, N_VALUES};
 /*
  * Function to change enum to string value
- * to return string:
+ * possible options to return a string from a function:
  * 	- allocate on stack at client side
  * 	- pointer to string literal (pointer to const char: const char * ...)
  * 	- allocate on heap at server side
@@ -59,23 +64,39 @@ struct Card {
 	enum CardValue Value;
 };
 
-struct Card handACard(){
-	//feed random generator
-	//
-	int random = 3;
+struct Card handRandomCard(enum CardType type, enum CardValue value)
+{
+	time_t seed;
+	int randIdx;
 	struct Card randomCard;
-	randomCard.Type = (enum CardType) random;
-	randomCard.Value = (enum CardValue) random;
+	srand((unsigned)time(&seed));
+	if (type >= N_TYPES){
+		randIdx = rand() % N_TYPES;
+		randomCard.Type = (enum CardType) randIdx;
+	} else {
+		randomCard.Type = type;
+	}
+	if (value >= N_VALUES){
+		randIdx = rand() % N_VALUES;
+		randomCard.Value = (enum CardValue) randIdx;
+	} else {
+		randomCard.Value = value;
+	}
 	return randomCard;
 }
 
 int main()
 {
-	//
 	printf("Hand a random card. \n");
-	struct Card rCard = handACard();
-	printf("Type: %d, Value: %d", rCard.Type, rCard.Value);
-	printf("Type: %s, Value: %s", strCardType(rCard.Type), strCardValue(rCard.Value));
+	printf("Which type do you want?\n");
+	//inputs parsing: fgets + sscanf for the win!!
+	char buf[3];
+	int type;
+	fgets(buf, 3, stdin);
+	_unsafe_sscanf(buf, "%d", &type);
+	struct Card rCard = handRandomCard((enum CardType) type, N_VALUES);
+	printf("Type: %d, Value: %d\n", rCard.Type, rCard.Value);
+	printf("Type: %s, Value: %s\n", strCardType(rCard.Type), strCardValue(rCard.Value));
 }
 
 
