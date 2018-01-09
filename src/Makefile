@@ -1,36 +1,35 @@
-all: CardGame HelloWorld MyCat LoadTest GpioMgr Test CardGame AsciiTable FctCallback MyInotify
-
 CC=gcc
 CFLAGS= -Wall -I../include
-
 OUT=../bin/
 
-CardGame: CardGame.c
+all: $(OUT)CardGame $(OUT)HelloWorld $(OUT)MyCat $(OUT)LoadTest $(OUT)GpioMgr $(OUT)Test $(OUT)CardGame $(OUT)AsciiTable $(OUT)MyInotify $(OUT)SystemCall
+
+$(OUT)CardGame: CardGame.c
 	$(CC) $(CFLAGS) CardGame.c -o $(OUT)CardGame
 
-HelloWorld: hello_world.c
+$(OUT)HelloWorld: hello_world.c
 	$(CC) $(CFLAGS) hello_world.c -o $(OUT)HelloWorld
 
-MyCat: MyCat.c
+$(OUT)MyCat: MyCat.c
 	$(CC) $(CFLAGS) MyCat.c -o $(OUT)MyCat
 
-LoadTest: load.c
+$(OUT)LoadTest: load.c
 	$(CC) $(CFLAGS) load.c -o $(OUT)LoadTest
 
-GpioMgr: MyGpioMgr.c MyStruct.h
+$(OUT)GpioMgr: MyGpioMgr.c MyStruct.h
 	$(CC) $(CFLAGS) MyGpioMgr.c -o $(OUT)GpioMgr
 
-AsciiTable: asciiTable.c
+$(OUT)AsciiTable: asciiTable.c
 	$(CC) $(CFLAGS) asciiTable.c -o $(OUT)AsciiTable
-
-FctCallback: FctCallback.c
-	$(CC) $(CFLAGS) FctCallback.c -o $(OUT)FctCallback
 	
-MyInotify: MyInotify.c 
+$(OUT)MyInotify: MyInotify.c 
 	$(CC) $(CFLAGS) MyInotify.c -o $(OUT)MyInotify
 	
-Test: test.c
+$(OUT)Test: test.c
 	$(CC) $(CFLAGS) test.c -o $(OUT)Test -fno-stack-protector
+
+$(OUT)SystemCall: SystemCall.c
+	$(CC) $(CFLAGS) SystemCall.c -o $(OUT)SystemCall
 
 # Basic Makefile structure
 # ========================
