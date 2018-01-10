@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS= -Wall -I../include
 OUT=../bin/
 
-all: $(OUT)CardGame $(OUT)HelloWorld $(OUT)MyCat $(OUT)LoadTest $(OUT)GpioMgr $(OUT)Test $(OUT)CardGame $(OUT)AsciiTable $(OUT)MyInotify $(OUT)SystemCall
+all: $(OUT)CardGame $(OUT)HelloWorld $(OUT)MyCat $(OUT)LoadTest $(OUT)GpioMgr $(OUT)Test $(OUT)CardGame $(OUT)AsciiTable $(OUT)MyInotify $(OUT)SystemCall $(OUT)MyThreads
 
 $(OUT)CardGame: CardGame.c
 	$(CC) $(CFLAGS) CardGame.c -o $(OUT)CardGame
@@ -30,6 +30,9 @@ $(OUT)Test: test.c
 
 $(OUT)SystemCall: SystemCall.c
 	$(CC) $(CFLAGS) SystemCall.c -o $(OUT)SystemCall
+	
+$(OUT)MyThreads: MyThreads.c
+	$(CC) $(CFLAGS) MyThreads.c -pthread -o $(OUT)MyThreads
 
 # Basic Makefile structure
 # ========================

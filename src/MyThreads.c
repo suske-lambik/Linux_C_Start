@@ -21,19 +21,25 @@
 
 #define NO_THREADS 5
 
-void * random_wait(void * id) {
-	printf("in thread %d: start.\n", (int) *id);
+void * random_wait(void * id_void) {
+	long id = (long) id_void;
+	printf("in thread %ld: start.\n", id);
+	//printf("in thread: start.\n");
+
 	pthread_exit(NULL);
 }
 
 int main() {
 	//
 	pthread_t wait_threads[NO_THREADS];
+	int rc;
 
-	for(int i = 0; i<NO_THREADS; ++i){
-		printf("start thread %d\n", i);
-		pthread_create(wait_threads[i], NULL,
+	for(long i = 0; i<NO_THREADS; ++i){
+		printf("start thread %ld\n", i);
+		rc = pthread_create(&wait_threads[i], NULL, random_wait, (void *) i);
+		//printf("rc: %d", rc);
 	}
+	pthread_exit(NULL);
 	return 0;
 }
 
