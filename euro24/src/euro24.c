@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#define BUFFERSIZE 5
 /* 
 	User: Start program, 
 		* choose first/second for each group
@@ -97,6 +100,27 @@ void enter_final16(char *final16[16], uint8_t group_id, char * first, char * sec
 }
 
 
+int prompt_int(char * question)
+{
+	char buffer[BUFFERSIZE]="";
+
+    printf(question);
+    char* bytes = fgets(buffer, BUFFERSIZE, stdin);
+    if(bytes == NULL)
+    {
+        printf("Entered 0 bytes\n");
+        return 99;
+    }
+
+    char *pos;
+    if ((pos=strchr(buffer, '\n')) != NULL){
+        *pos = '\0';
+    }
+
+    return (int) strtol(buffer, NULL, 10);
+}
+
+
 int main(void)
 {
 	char *teams[24] = {"Duitsland", "Zwitserland", "Schotland", "Hongarije",\
@@ -109,8 +133,8 @@ int main(void)
 
 	for(int i = 0; i < 6; i++){
 		print_group(teams, i);
-		uint8_t first = prompt_first_team();
-		uint8_t second = prompt_second_team();
+		uint8_t first = prompt_int("Who will be first?"); //prompt_first_team();
+		uint8_t second = prompt_int("Who will be second?");
 		printf("%i - %i\n", first, second);
 		enter_final16(final16, i, get_group_team(teams, i, first), get_group_team(teams, i, second));
 	}

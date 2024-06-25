@@ -32,7 +32,6 @@ int main(void)
 {
 	char buffer[BUFFERSIZE]="";
 	FILE* fd;
-	FILE* fd2;
 
 	while(true)
 	{
@@ -54,15 +53,13 @@ int main(void)
 		}
 
 		fd = fopen(buffer, "r");
-		fd2 = fopen(buffer, "r");
-		if(fd == NULL)
+    	if(fd == NULL)
 		{
 			printf("The file %s couldn't be opened.\n", buffer);
 			continue;
 		}
 		printf("Will print contents of %s\n", buffer);
 		cat(fd, 100);
-		cat(fd2, 1);
 	}
 	return 0;
 }

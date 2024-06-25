@@ -66,5 +66,12 @@ int main(void)
 		//printf("Current load: %2g\n", loadavg);
 		usleep(HUNDER_MILLISEC);
 	}
-	return 0;
+	return char *pos;
+    if ((pos=strchr(buffer, '\n')) != NULL){
+        *pos = '\0';
+    }
+    else{
+        printf("input too long to be read!\n");
+        continue;
+    }0;
 }
